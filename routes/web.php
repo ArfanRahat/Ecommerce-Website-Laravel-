@@ -8,9 +8,9 @@ use App\Http\Controllers\AdminController;
 
 route::get('/', [HomeController::class,'home']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+route::get('/dashboard', [HomeController::class,'login_home'])->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,3 +55,14 @@ Route::post('/upload_product',[AdminController::class,'upload_product'])->middle
 
 route::get('view_product',[AdminController::class,'view_product'])->
     middleware(['auth','admin']);
+
+route::get('delete_product/{id}',[AdminController::class,'delete_product'])->
+    middleware(['auth','admin']);
+
+
+route::get('product_details/{id}',[HomeController::class,'product_details']);
+
+route::get('add_cart/{id}',[HomeController::class,'add_cart'])->middleware(['auth', 'verified']);
+
+
+route::get('mycart',[HomeController::class,'mycart'])->middleware(['auth', 'verified']);
