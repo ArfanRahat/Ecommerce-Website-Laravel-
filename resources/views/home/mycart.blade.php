@@ -3,123 +3,136 @@
 
 <head>
   @include('home.css')
+  <style type="text/css">
+    .div_deg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 60px;
+      width: 100%;
+    }
+
+    table {
+      width: 60%;
+      border: 2px solid black;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th {
+      border: 2px solid black;
+      text-align: center;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: black;
+      padding: 12px;
+    }
+
+    td {
+      border: 1px solid skyblue;
+      padding: 12px;
+    }
+    .order_deg
+    {
+      padding-right:100px;
+      margin-top: -20px:
+    }
+    label
+    {
+    display:
+    inline-block;
+    width: 150px;
+    }
+    .div_gap
+    {
+    padding: 20px;
+    }
+  </style>
 </head>
 
 <body>
   <div class="hero_area">
-    <!-- header section strats -->
+    <!-- header section starts -->
     @include('home.header')
     <!-- end header section -->
   </div>
 
-  @foreach($cart as $cart)
+  <div class="div_deg">
+    
+  <div>
+    <form>    
+      <div class="div_gap">
+        <lebel >Receiver Name</lebel>
 
-  {{$cart->user_id}}
-
-  <h1>{{$cart->product_id}}</h1>
-  <h1>{{$cart->title}}</h1>
-
-
-
-
-  @endforeach
-
-
-
-
-
-
-
-   
-
-  <!-- info section -->
-
-  <section class="info_section  layout_padding2-top">
-    <div class="social_container">
-      <div class="social_box">
-        <a href="">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-youtube" aria-hidden="true"></i>
-        </a>
+        <input type="text" name="name">
       </div>
+      <div  class="div_gap">
+      <lebel>Receiver Address</lebel>
+
+      <textarea name="address"></textarea>
+      </div>
+      <div  class="div_gap">
+      <lebel>Receiver Phone</lebel>
+
+      <input type="text" name="phone">
     </div>
-    <div class="info_container ">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              ABOUT US
-            </h6>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
-            </p>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="info_form ">
-              <h5>
-                Newsletter
-              </h5>
-              <form action="#">
-                <input type="email" placeholder="Enter your email">
-                <button>
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              NEED HELP
-            </h6>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
-            </p>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              CONTACT US
-            </h6>
-            <div class="info_link-box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span> Gb road 123 london Uk </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>+01 12345678901</span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span> demo@gmail.com</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div  class="div_gap">
+  
+
+      <input class="btn btn-primary" type="submit" value="Place Order">
     </div>
-    <!-- footer section -->
-    <footer class=" footer_section">
-      <div class="container">
-        <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Web Tech Knowledge</a>
-        </p>
-      </div>
-    </footer>
-    <!-- footer section -->
+  </form>
+  
+  
+  
+  </div>
+  
+  <table>
+      <tr>
+        <th>Product Title</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Remove</th>
+      </tr>
 
-  </section>
+      @php
+        $total = 0;
+      @endphp
 
-  <!-- end info section -->
+      @foreach($cart as $item)
+      <tr>
+        <td>{{ $item->product->title }}</td>
+        <td>{{ $item->product->price }}</td>
+        <td>
+          <img width="150" src="/products/{{ $item->product->image }}"> 
+        </td>
+        <td>
+          <form action="{{ route('cart.remove',$item->id) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" 
+                      onclick="return confirm('Are you sure you want to remove this product?')">
+                 Remove
+              </button>
+          </form>
+        </td>
+      </tr>
 
+      @php
+        $total += $item->product->price;
+      @endphp
+
+      @endforeach
+      <tr>
+        <td><strong>Total</strong></td>
+        <td>{{ $total }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+
+    </table>
+  </div>
 
   <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
   <script src="{{asset('js/bootstrap.js')}}"></script>

@@ -119,4 +119,13 @@ class HomeController extends Controller
         return view('home.mycart',compact('count','cart'));
     }
 
+    public function removeProduct($id)
+    {
+        $item = Cart::findOrFail($id);
+        $item->delete();
+
+        return redirect()->back()->with('msg', 'Product removed from the cart');
+    }
+
+
 }
